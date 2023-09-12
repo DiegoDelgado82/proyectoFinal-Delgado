@@ -112,6 +112,10 @@ function revisarLocalStorage()
     });
   
     document.getElementById(servicio).style.display = "inline";
+    if (servicio==="Otros")
+    {
+      cargarOtraTarea();
+    }
   }
   
 
@@ -248,10 +252,12 @@ function generarPDF() {
   eliminarColumna();
   const element = document.getElementById("main-print");
 
-  //A futuro modificar el nombre del archivo para personalizarlo
+  //Utilizo la fecha para personalizar el formato del nombre del archivo de presupuesto
+  const fecha= new Date()
+
   const options = {
     margin: 10,
-    filename:`Presupuesto ${clientePresupuesto.nombre}.pdf`,
+    filename:`Presupuesto ${clientePresupuesto.nombre} ${fecha.getDate()}-${(fecha.getMonth()+1)}-${fecha.getFullYear()}.pdf`,
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
@@ -289,4 +295,28 @@ function enviarPresupuesto()
  alert("Enviar Presupuesto")
 
 window.open(clientePresupuesto.mensaje)
+}
+
+
+const cargarTareas= async()=>
+{
+  const rep= await fetch("../json/tareas.json")
+  const tareas= await rep.json()
+  tareas.forEach((tarea)=>{
+    document.getElementById(tarea.categoria).innerHTML= document.getElementById(tarea.categoria).innerHTML+`<option value="${tarea.tarea}">
+    ${tarea.tarea}
+  </option>`
+  })
+}
+
+function cargarOtraTarea()
+{
+const fecha= new Date()
+
+ 
+    const tarea=prompt("Cargar la tarea a realizar")
+
+    document.getElementById("Otros").innerHTML= `<option value="${tarea}">
+    ${tarea}
+  </option>`
 }

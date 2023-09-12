@@ -32,11 +32,15 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
       referrerpolicy="no-referrer"
     ></script>
   </head>
-  <body onload="revisarLocalStorage()">
+  <body onload="revisarLocalStorage(), cargarTareas()">
     <main id="main-print">
       <section class="container-fluid">
         <div class="row col-12 mb-3 justify-content-center align-items-center">
-          <img src="../img/imagen.jpeg" alt="Imagen Reparacioens Manteco" class="col-4 imgLogo" />
+          <img
+            src="../img/imagen.jpeg"
+            alt="Imagen Reparacioens Manteco"
+            class="col-4 imgLogo"
+          />
           <h1 class="h1 col-6">REPARACIONES MANTECO</h1>
         </div>
       </section>
@@ -102,101 +106,33 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               <label for="Ninguno">Tarea</label>
               <input type="text" class="form-control" id="Ninguno" readonly />
 
-              <select class="form-control" id="Pintura" style="display: none">
-                <option value="Pintar una habitación">
-                  Pintar una habitación
-                </option>
-                <option value="Repintar un frente">Repintar un frente</option>
-                <option value="Pintar muebles de madera">
-                  Pintar muebles de madera
-                </option>
-                <option value="Hacer un mural artístico">
-                  Hacer un mural artístico
-                </option>
-                <option value="Pintar abertura de madera">
-                  Pintar abertura de madera
-                </option>
-                <option value="Restaurar pared">Restaurar pared</option>
-                <option value="Impermeabilizar techo">
-                  Impermeabilizar techo
-                </option>
-              </select>
-              <select class="form-control" id="Albañil" style="display: none">
-                <option value="Construir una pared de ladrillos">
-                  Construir una pared de ladrillos
-                </option>
-                <option value="Hacer medianera">Hacer medianera</option>
-                <option value="Hacer asador">Hacer asador</option>
-                <option value="Construir una pared de contención">
-                  Construir una pared de contención
-                </option>
-                <option value="Levantar columnas y vigas para una estructura">
-                  Levantar columnas y vigas para una estructura
-                </option>
-                <option value="Reparar una pared agrietada">
-                  Reparar una pared agrietada
-                </option>
-                <option value="Colocar ceramicas">Colocar ceramicas</option>
-              </select>
+              <select
+                class="form-control"
+                id="Pintura"
+                style="display: none"
+              ></select>
+              <select
+                class="form-control"
+                id="Albañil"
+                style="display: none"
+              ></select>
               <select
                 class="form-control"
                 id="Electricidad"
                 style="display: none"
-              >
-                <option value="Instalar un nuevo interruptor de luz">
-                  Instalar un nuevo interruptor de luz
-                </option>
-                <option
-                  value="Arreglar un cortocircuito en un circuito eléctrico"
-                >
-                  Arreglar un cortocircuito en un circuito eléctrico
-                </option>
-                <option value="Reemplazar un enchufe defectuoso">
-                  Reemplazar un enchufe defectuoso
-                </option>
-                <option value="Instalar una lámpara o luminaria">
-                  Instalar una lámpara o luminaria
-                </option>
-                <option
-                  value="Colocar sensores de movimiento para luces exteriores"
-                >
-                  Colocar sensores de movimiento para luces exteriores
-                </option>
-                <option value="Montar un panel de control eléctrico">
-                  Montar un panel de control eléctrico
-                </option>
-                <option value="Conectar un ventilador de techo">
-                  Conectar un ventilador de techo
-                </option>
-                <option value="Instalar un timbre inalámbrico">
-                  Instalar un timbre inalámbrico
-                </option>
-                <option value="Colocar tomas de corriente adicionales">
-                  Colocar tomas de corriente adicionales
-                </option>
-                <option
-                  value="Hacer una instalación eléctrica para un sistema de alarma"
-                >
-                  Hacer una instalación eléctrica para un sistema de alarma
-                </option>
-              </select>
-              <select class="form-control" id="Plomeria" style="display: none">
-                <option value="Plomeria de baño">Plomeria de baño</option>
-                <option value="servicio2">Pintura regular</option>
-                <option value="servicio2">Pintar aberturas</option>
-                <option value="servicio2">Pintura techo</option>
-              </select>
-              <select class="form-control" id="Herreria" style="display: none">
-                <option value="Soldadura general">Soldadura general</option>
-                <option value="servicio2">Pintura regular</option>
-                <option value="servicio2">Pintar aberturas</option>
-                <option value="servicio2">Pintura techo</option>
-              </select>
-              <select class="form-control" id="Otros" style="display: none">
-                <option value="Otros">Otros</option>
-                <option value="servicio2">Pintura regular</option>
-                <option value="servicio2">Pintar aberturas</option>
-                <option value="servicio2">Pintura techo</option>
+              ></select>
+              <select
+                class="form-control"
+                id="Plomeria"
+                style="display: none"
+              ></select>
+              <select
+                class="form-control"
+                id="Herreria"
+                style="display: none"
+              ></select>
+              <select class="form-control" id="Otros" style="display: none" >
+                
               </select>
             </div>
           </div>
@@ -225,15 +161,12 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
             </div>
           </div>
         </div>
-        
       </section>
-      <section class="mt-2 px-0" >
+      <section class="mt-2 px-0">
         <div class="row col-12 justify-content-center align-items-center">
           <h4 class="text-center" id="hCliente"></h4>
         </div>
-       
       </section>
-
 
       <section class="my-1 px-0" id="aImprimir2">
         <div class="container px-0">
@@ -259,17 +192,17 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
     </main>
     <footer class="footer z-1">
       <div class="row mt-1 justify-content-center align-items-center">
-        <b><p class="col-12 text-center" id="total" >
-          Total Presupuesto: $0</p></b>
+        <b
+          ><p class="col-12 text-center" id="total">Total Presupuesto: $0</p></b
+        >
       </div>
       <div class="row mb-1 justify-content-center align-items-center">
-       
         <button
           type="button"
           class="btn btn-success col-6 btnPresupuesto"
           onclick="generarPDF()"
         >
-          Enviar presupuesto <i class="fa fa-send-o "></i>
+          Enviar presupuesto <i class="fa fa-send-o"></i>
         </button>
       </div>
     </footer>
@@ -281,12 +214,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
     ></script>
 
     <script src="../js/scripts.js"></script>
-    
 
-    <script>
-      
-    </script>
+    <script></script>
   </body>
 </html>
-
-
