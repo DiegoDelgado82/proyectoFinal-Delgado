@@ -66,7 +66,7 @@ function revisarLocalStorage() {
       clientePresupuestoViejo.crearMensaje();
       clientePresupuesto = clientePresupuestoViejo;
     } else {
-      modal.show();
+     // modal.show();
     }
   } else {
     modal.show();
@@ -94,6 +94,7 @@ function obtenerInfoCliente() {
 //Se realizo la modificación de la función cargar cliente, utilizando funcion flecha y operador ternario AND
 
 const cargarCliente = () => {
+  let modal = document.getElementById("modalForm");
   let nombre = document.getElementById("nombreInput").value;
   let telefono = document.getElementById("telefonoInput").value;
   nombre !== "" && telefono !== ""
@@ -101,7 +102,8 @@ const cargarCliente = () => {
       clientePresupuesto.crearMensaje(),
       console.log(clientePresupuesto),
       enviarDatosCliente(nombre, telefono),
-      cargarClienteEnLocalStorage(nombre, telefono))
+      cargarClienteEnLocalStorage(nombre, telefono)),
+      modal.close()
     : alert(`No se cargaron los datos correctamente, reintente`);
 };
 
