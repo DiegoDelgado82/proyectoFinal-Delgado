@@ -32,7 +32,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
       referrerpolicy="no-referrer"
     ></script>
   </head>
-  <body onload="revisarLocalStorage(), cargarTareas()">
+  <body onload="obtenerInfoCliente()">
     <main id="main-print">
       <section class="container-fluid">
         <div class="row col-12 mb-3 justify-content-center align-items-center">
@@ -51,7 +51,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               type="button"
               id="btnPintura"
               class="col-3 btn btn-primary btnTarea mb-1 mx-1 colorBtn"
-              onclick="seleccionServicio('Pintura')"
+              onclick="cargarTareas('Pintura')"
             >
               Pintura
             </button>
@@ -59,7 +59,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               type="button"
               id="btnAlbañil"
               class="col-3 btn btn-primary btnTarea mb-1 mx-1 colorBtn"
-              onclick="seleccionServicio('Albañil')"
+              onclick="cargarTareas('Albañil')"
             >
               Albañilería
             </button>
@@ -67,7 +67,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               type="button"
               id="btnElectricidad"
               class="col-3 btn btn-primary btnTarea mb-1 mx-1 colorBtn"
-              onclick="seleccionServicio('Electricidad')"
+              onclick="cargarTareas('Electricidad')"
             >
               Electricidad
             </button>
@@ -75,7 +75,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               type="button"
               id="btnPlomeria"
               class="col-3 btn btn-primary btnTarea mb-1 mx-1 colorBtn"
-              onclick="seleccionServicio('Plomeria')"
+              onclick="cargarTareas('Plomeria')"
             >
               Plomería
             </button>
@@ -83,7 +83,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               type="button"
               id="btnHerreria"
               class="col-3 btn btn-primary btnTarea mb-1 mx-1 colorBtn"
-              onclick="seleccionServicio('Herreria')"
+              onclick="cargarTareas('Herreria')"
             >
               Herrería
             </button>
@@ -91,7 +91,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               type="button"
               id="btnOtros"
               class="col-3 btn btn-primary btnTarea mb-1 mx-1 colorBtn"
-              onclick="seleccionServicio('Otros')"
+              onclick="cargarOtraTarea()"
             >
               Otros
             </button>
@@ -104,36 +104,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
           <div class="col-5 px-1 text-white">
             <div class="form-group">
               <label for="Ninguno">Tarea</label>
-              <input type="text" class="form-control" id="Ninguno" readonly />
-
-              <select
-                class="form-control"
-                id="Pintura"
-                style="display: none"
-              ></select>
-              <select
-                class="form-control"
-                id="Albañil"
-                style="display: none"
-              ></select>
-              <select
-                class="form-control"
-                id="Electricidad"
-                style="display: none"
-              ></select>
-              <select
-                class="form-control"
-                id="Plomeria"
-                style="display: none"
-              ></select>
-              <select
-                class="form-control"
-                id="Herreria"
-                style="display: none"
-              ></select>
-              <select class="form-control" id="Otros" style="display: none" >
-                
-              </select>
+              <select class="form-control" id="tarea"></select>
             </div>
           </div>
           <div class="col-3 px-1 text-white">
@@ -189,11 +160,6 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
           <h5 id="hTotalPresupuesto"></h5>
         </div>
       </section>
-
-
-
-
-      
     </main>
     <footer class="footer z-1">
       <div class="row mt-1 justify-content-center align-items-center">

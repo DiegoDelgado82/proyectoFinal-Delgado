@@ -1,127 +1,117 @@
-let listaServicios=[]
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/*FUNCIONES DE PAGINA INDEX. SOBRE LA CARGA DEL CLIENTE Y VERIFICACIÓN DE LOS DATOS CARGADOS EN EL LOCAL STORAGE */
 
-class Servicio
-  {
-    constructor(tarea, precio,cantidad)
-    {
-      this.tarea=tarea;
-      this.precio=parseInt(precio);
-      this.cantidad=parseInt(cantidad);
-      this.precioTotal=0;
-    }
-    calcularPrecioTotal()
-    {
-      this.precioTotal= this.precio*this.cantidad
-    }
+let listaServicios = [];
+
+class Servicio {
+  constructor(tarea, precio, cantidad) {
+    this.tarea = tarea;
+    this.precio = parseInt(precio);
+    this.cantidad = parseInt(cantidad);
+    this.precioTotal = 0;
   }
-
-
-
-
-  class Cliente
-  {
-    constructor(nombre,telefono,mensaje)
-    {
-      this.nombre=nombre;
-      this.telefono=telefono;
-      this.mensaje="";
-      
-    }
-    crearMensaje()
-    {
-      const mensaje="Le envio el presupuesto en base a lo que se necesita";
-      this.mensaje= `https://wa.me/${this.telefono}?text=${encodeURIComponent(mensaje)}`;
-      
-    }
+  calcularPrecioTotal() {
+    this.precioTotal = this.precio * this.cantidad;
   }
+}
 
+class Cliente {
+  constructor(nombre, telefono, mensaje) {
+    this.nombre = nombre;
+    this.telefono = telefono;
+    this.mensaje = "";
+  }
+  crearMensaje() {
+    const mensaje = `Hola ${this.nombre}, recordá que estamos para ayudarte, cualquier consulta no dudes en preguntarnos. Saludos, que tengas buen día`;
+    this.mensaje = `https://wa.me/${this.telefono}?text=${encodeURIComponent(
+      mensaje
+    )}`;
+  }
+}
 
-  
 /* Crear una función que me cargue el cliente y su teléfono en el local storage. De esta forma
 poder ir creando el prespuesto manteniendo los datos del cliente en la sesión. Hay que tener en cuenta que cuando se cargue la pagina, permita
 volcar los datos del local storage en el nombre del cliente comprendido en las etiquetas del DOM
 */
-function cargarClienteEnLocalStorage(nombre, telefono)
-{
-  localStorage .setItem("cliente", nombre);
-  localStorage .setItem("telefono", telefono);
-  
-
-
+function cargarClienteEnLocalStorage(nombre, telefono) {
+  localStorage.setItem("cliente", nombre);
+  localStorage.setItem("telefono", telefono);
 }
 
 /*Esta función me permite verificar si hay un cliente guardado en el local storage, para seguir realizando el presupuesto al mismo, en el caso en que no haya datos en el local storage,
 solicita la carga de los datos del cliente*/
 
-function revisarLocalStorage()
-{
- 
-  if(localStorage.key(0))
-  {
-    const cliente= localStorage.key(0)
-    const telefono= localStorage.key(1)
+function revisarLocalStorage() {
+  let modal = document.getElementById("modalForm");
+  if (localStorage.key(0)) {
+    const cliente = localStorage.key(0);
+    const telefono = localStorage.key(1);
 
-    let confirmar = confirm(`El cliente almacenado es ${localStorage.getItem(cliente)}, ¿desea seguir utilizando el mismo?`);
+    let confirmar = confirm(
+      `El último cliente ingresado es ${localStorage.getItem(
+        cliente
+      )}, ¿desea seguir utilizando el mismo?`
+    );
     if (confirmar) {
-        document.getElementById("hCliente").textContent = `Presupuesto dirigido a ${localStorage.getItem(cliente)}, teléfono ${localStorage.getItem(telefono)}`
-	let clientePresupuestoViejo =new Cliente(localStorage.getItem(cliente), localStorage.getItem(telefono));
-	clientePresupuestoViejo.crearMensaje();
-	clientePresupuesto=clientePresupuestoViejo
-	
+      enviarDatosCliente(
+        localStorage.getItem(cliente),
+        localStorage.getItem(telefono)
+      );
+
+      let clientePresupuestoViejo = new Cliente(
+        localStorage.getItem(cliente),
+        localStorage.getItem(telefono)
+      );
+      clientePresupuestoViejo.crearMensaje();
+      clientePresupuesto = clientePresupuestoViejo;
+    } else {
+      modal.show();
     }
-    else {
-      cargarCliente()
-      
-    }
+  } else {
+    modal.show();
   }
- else
- {
-  cargarCliente()
- }
 }
 
+//Paso por parámetro el nombre y teléfono del cliente para que lo muestre en la página principal
+function enviarDatosCliente(cliente, telefono) {
+  (window.location.href = `./pages/principal.html?cliente=${cliente}&telefono=${telefono}`),
+    "_blank";
+}
+
+//Obtengo por parámetro el nombre y teléfono del cliente para que lo muestre en la página principal
+function obtenerInfoCliente() {
+  const url = new URL(window.location.href);
+
+  let cliente = url.searchParams.get("cliente");
+  let telefono = url.searchParams.get("telefono");
+
+  document.getElementById(
+    "hCliente"
+  ).textContent = `Presupuesto dirigido a ${cliente}, teléfono ${telefono}`;
+}
 
 //Se realizo la modificación de la función cargar cliente, utilizando funcion flecha y operador ternario AND
 
+const cargarCliente = () => {
+  let nombre = document.getElementById("nombreInput").value;
+  let telefono = document.getElementById("telefonoInput").value;
+  nombre !== "" && telefono !== ""
+    ? ((clientePresupuesto = new Cliente(nombre, telefono)),
+      clientePresupuesto.crearMensaje(),
+      console.log(clientePresupuesto),
+      enviarDatosCliente(nombre, telefono),
+      cargarClienteEnLocalStorage(nombre, telefono))
+    : alert(`No se cargaron los datos correctamente, reintente`);
+};
 
-  const cargarCliente = () => {
-    let nombre = prompt("Ingrese el nombre del cliente al cual va dirigido el presupuesto");
-    let telefono = prompt("Ingrese teléfono del cliente");
-  
-    (nombre !== "" && telefono !== "")
-      ? (
-        clientePresupuesto= new Cliente(nombre, telefono),
-        clientePresupuesto.crearMensaje(),
-        console.log(clientePresupuesto),
-        document.getElementById("hCliente").textContent = `Presupuesto dirigido a ${nombre}, teléfono ${telefono}`,
-        cargarClienteEnLocalStorage(nombre, telefono)
-      )
-      : (
-        alert(`No se cargaron los datos correctamente, reintente`),
-        cargarCliente()
-      );
-  }
-  
-  /*Esta función habilita el servicio seleccionado, mostrando la tarea de cada servicio*/
-  function seleccionServicio(servicio) {
-    const servicios = ["Ninguno", "Pintura", "Albañil", "Electricidad", "Plomeria", "Herreria", "Otros"];
-  
-    servicios.forEach(serv => {
-      document.getElementById(serv).style.display = "none";
-    });
-  
-    document.getElementById(servicio).style.display = "inline";
-    if (servicio==="Otros")
-    {
-      cargarOtraTarea();
-    }
-  }
-  
+function crearCliente() {
+  let cliente = new Cliente(nombre, apellido, telefono);
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+/*FUNCIONES DE PAGINA PRINCIPAL. SOBRE EL ARMADO DEL PRESUPUESTO */
 
 /*Calculo el precio total de la tarea multiplicando el precio por la acantidad */
 function calcularPrecioTotal() {
@@ -135,40 +125,20 @@ function calcularPrecioTotal() {
 function cargarFila() {
   let price = parseInt(document.getElementById("precio").value);
   let cantidad = parseInt(document.getElementById("cantidad").value);
-  let servNull = document.getElementById("Ninguno").style.display;
+  let servNull = document.getElementById("tarea").value;
   /*verificar si tiene contenido cargado */
-  if (!isNaN(price) && !isNaN(cantidad) && servNull != "inline" && price>0 && cantidad>0) {
-    /*Por medio del if anidado verifico cual es el combo de servicio activo*/
-    let serv;
-    if (document.getElementById("Pintura").style.display != "none") {
-      serv = "Pintura";
-    } else {
-      if (document.getElementById("Albañil").style.display != "none") {
-        serv = "Albañil";
-      } else {
-        if (document.getElementById("Electricidad").style.display != "none") {
-          serv = "Electricidad";
-        } else {
-          if (document.getElementById("Plomeria").style.display != "none") {
-            serv = "Plomeria";
-          } else {
-            if (document.getElementById("Herreria").style.display != "none") {
-              serv = "Herreria";
-            } else {
-              if (document.getElementById("Otros").style.display != "none") {
-                serv = "Otros";
-              }
-            }
-          }
-        }
-      }
-    }
-
-    let servicio = document.getElementById(serv).value;
+  if (
+    !isNaN(price) &&
+    !isNaN(cantidad) &&
+    servNull != "" &&
+    price > 0 &&
+    cantidad > 0
+  ) {
+    let servicio = document.getElementById("tarea").value;
     let precio = document.getElementById("precio").value;
     let cant = document.getElementById("cantidad").value;
     crearServicio(servicio, precio, cant);
-    let indice= listaServicios.length
+    let indice = listaServicios.length;
     document.getElementById("cuerpoTabla").innerHTML =
       document.getElementById("cuerpoTabla").innerHTML +
       "<tr><td>" +
@@ -179,38 +149,32 @@ function cargarFila() {
       cant +
       "</td><td>" +
       precio * cant +
-      "</td><td><button type='button' class='btn btn-danger' onclick='borrarFila(this,"+ indice.toString()+")'>" +
+      "</td><td><button type='button' class='btn btn-danger' onclick='borrarFila(this," +
+      indice.toString() +
+      ")'>" +
       "<i class='fa fa-trash'></i></button></td>";
-    seleccionServicio("Ninguno")  
-    //document.getElementById(serv).value = "";
+
+    document.getElementById("tarea").value = "";
     document.getElementById("precio").value = "";
     document.getElementById("cantidad").value = "";
-
-    
-
-    //calcularMontoTotal();
-  } 
-   /*Informamos al usuario el dato faltante */
-  else if (isNaN(price) || price<0)
+  } else if (isNaN(price) || price < 0)
+  /*Informamos al usuario el dato faltante */
     alert("Debe cargar un precio válido, ingrese nuevamente");
-  else if (isNaN(cantidad) || cantidad<0)
+  else if (isNaN(cantidad) || cantidad < 0)
     alert("Debe cargar una cantidad válida, ingrese nuevamente");
   else alert("Debe cargar un servicio, ingrese nuevamente");
 }
 
 /*Permite borrar una fila de la tabla de tareas cargada */
 function borrarFila(boton, idx) {
-  
   let fila = boton.parentNode.parentNode;
-  
+
   let tabla = fila.parentNode;
   tabla.removeChild(fila);
   //llamo a la función para que re-calcule nuevamente el total del presupuesto
   //calcularMontoTotal();
-  listaServicios[idx-1].precioTotal=0;
+  listaServicios[idx - 1].precioTotal = 0;
   calcularMontoTotalPresupuesto();
- 
-
 }
 
 function eliminarColumna() {
@@ -219,104 +183,108 @@ function eliminarColumna() {
 
   if (filas > 0) {
     for (let i = 0; i < filas; i++) {
-        tabla.rows[i].deleteCell(-1);
+      tabla.rows[i].deleteCell(-1);
     }
+  }
 }
-
-}
-
 
 //Calculo en monto total del presupuesto, recorriendo el array de objetos servicios y lo muestra en pantalla
 function calcularMontoTotalPresupuesto() {
-  
- let montoTotal = 0;
+  let montoTotal = 0;
 
-   for(let i=0;i<listaServicios.length;i++)
-  {
-    montoTotal+=listaServicios[i].precioTotal
+  for (let i = 0; i < listaServicios.length; i++) {
+    montoTotal += listaServicios[i].precioTotal;
   }
-  
+
   document.getElementById("total").textContent =
-    "Total Presupuesto: $"+montoTotal;
-  console.log(listaServicios)
+    "Total Presupuesto: $" + montoTotal;
+  console.log(listaServicios);
 }
-
-
 
 // funcion que me permite pasar lo que hay en pantalla a PDF
 function generarPDF() {
-  console.log("Se activa la funcion para descargar el pdf");	
+  console.log("Se activa la funcion para descargar el pdf");
   document.getElementById("botones").style.display = "none";
   document.getElementById("tareas").style.display = "none";
-  document.getElementById("hTotalPresupuesto").textContent=document.getElementById("total").textContent
+  document.getElementById("hTotalPresupuesto").textContent =
+    document.getElementById("total").textContent;
   eliminarColumna();
   const element = document.getElementById("main-print");
 
   //Utilizo la fecha para personalizar el formato del nombre del archivo de presupuesto
-  const fecha= new Date()
+  const fecha = new Date();
 
   const options = {
     margin: 10,
-    filename:`Presupuesto ${clientePresupuesto.nombre} ${fecha.getDate()}-${(fecha.getMonth()+1)}-${fecha.getFullYear()}.pdf`,
+    filename: `Presupuesto ${localStorage.getItem("cliente")} ${fecha.getDate()}-${
+      fecha.getMonth() + 1
+    }-${fecha.getFullYear()}.pdf`,
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
 
   html2pdf().from(element).set(options).save();
-  
+
   setTimeout(function () {
     window.open("../index.html", "_blank");
   }, 3000);
- 
 }
-
-
 
 //Esta función me crea el array de objetos Servicios,para poder generar el presupuesto de los mismos
-function crearServicio(servicio, precio, cantidad)
-{
-  
-  listaServicios.push(new Servicio(servicio,precio,cantidad))
-  listaServicios[listaServicios.length-1].calcularPrecioTotal()
-  calcularMontoTotalPresupuesto(); 
-  
-}
-
-
-function crearCliente()
-{
-  let cliente= new Cliente(nombre, apellido, telefono)
+function crearServicio(servicio, precio, cantidad) {
+  listaServicios.push(new Servicio(servicio, precio, cantidad));
+  listaServicios[listaServicios.length - 1].calcularPrecioTotal();
+  calcularMontoTotalPresupuesto();
 }
 
 /*En esta funcion se debe utilizar el mensaje del objeto cliente*/
-function enviarPresupuesto()
-{
- alert("Enviar Presupuesto")
 
-window.open(clientePresupuesto.mensaje)
+function enviarPresupuesto() {
+  if (localStorage.key(0)) {
+    const cliente = localStorage.key(0);
+    const telefono = localStorage.key(1);
+
+    let confirmar = confirm(
+      `El último cliente ingresado es ${localStorage.getItem(
+        cliente
+      )}, ¿desea enviar mensaje a este cliente?`
+    );
+    if (confirmar) {
+      let clientePresupuestoViejo = new Cliente(
+        localStorage.getItem(cliente),
+        localStorage.getItem(telefono)
+      );
+      clientePresupuestoViejo.crearMensaje();
+      window.open(clientePresupuestoViejo.mensaje);
+    }
+  } else {
+    alert("No hay cliente cargado");
+  }
 }
 
+const cargarTareas = async (categoria) => {
+  document.getElementById("tarea").innerHTML = "";
+  const rep = await fetch("../json/tareas.json");
+  const tareas = await rep.json();
 
-const cargarTareas= async()=>
-{
-  const rep= await fetch("../json/tareas.json")
-  const tareas= await rep.json()
-  tareas.forEach((tarea)=>{
-    document.getElementById(tarea.categoria).innerHTML= document.getElementById(tarea.categoria).innerHTML+`<option value="${tarea.tarea}">
-    ${tarea.tarea}
-  </option>`
-  })
-}
+  tareas.forEach((tarea) => {
+    if (categoria === tarea.categoria) {
+      document.getElementById("tarea").innerHTML =
+        document.getElementById("tarea").innerHTML +
+        `<option value="${tarea.tarea}">
+      ${tarea.tarea}
+    </option>`;
+    }
+  });
+};
 
-function cargarOtraTarea()
-{
-const fecha= new Date()
+function cargarOtraTarea() {
+  const fecha = new Date();
 
- 
-    const tarea=prompt("Cargar la tarea a realizar")
+  const tarea = prompt("Cargar la tarea a realizar");
 
-    document.getElementById("Otros").innerHTML= `<option value="${tarea}">
+  document.getElementById("tarea").innerHTML = `<option value="${tarea}">
     ${tarea}
-  </option>`
+  </option>`;
 }
