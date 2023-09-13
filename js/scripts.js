@@ -66,10 +66,10 @@ function revisarLocalStorage() {
       clientePresupuestoViejo.crearMensaje();
       clientePresupuesto = clientePresupuestoViejo;
     } else {
-     // modal.show();
+      modal.show();
     }
   } else {
-    modal.show();
+   // modal.show();
   }
 }
 
