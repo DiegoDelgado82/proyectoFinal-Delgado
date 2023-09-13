@@ -102,8 +102,10 @@ const cargarCliente = () => {
       clientePresupuesto.crearMensaje(),
       console.log(clientePresupuesto),
       enviarDatosCliente(nombre, telefono),
-      cargarClienteEnLocalStorage(nombre, telefono)),
-      modal.close()
+      cargarClienteEnLocalStorage(nombre, telefono),
+       modal.close()
+      )
+      
     : alert(`No se cargaron los datos correctamente, reintente`);
 };
 
