@@ -218,6 +218,13 @@ function generarPDF() {
   document.getElementById("hTotalPresupuesto").textContent =
     document.getElementById("total").textContent;
     document.getElementById("pLeyendaPresupuesto").innerHTML="El siguiente prespuesto es a modo informativo, el mismo puede variar.<br>Válido por el termino de 48 hs.<br>El mismo no incluye costo de materiales, fletes, o gastos indirectos "
+    document.getElementById("pDireccion").textContent= "Dirección: Av colón 9875 B° Colinas del Cerro Córdoba Capital"
+    document.getElementById("pTelefono").textContent= "Teléfono: (+54) 351-5196190"
+    document.getElementById("pWeb").textContent= "Web: reparacionesmanteco.netlify.app"
+
+
+
+
   eliminarColumna();
   const element = document.getElementById("main-print");
 
