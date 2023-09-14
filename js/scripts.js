@@ -66,7 +66,7 @@ function revisarLocalStorage() {
       clientePresupuestoViejo.crearMensaje();
       clientePresupuesto = clientePresupuestoViejo;
     } else {
-      modal.show();
+      //modal.show();
     }
   } else {
    // modal.show();
@@ -82,13 +82,14 @@ function enviarDatosCliente(cliente, telefono) {
 //Obtengo por parámetro el nombre y teléfono del cliente para que lo muestre en la página principal
 function obtenerInfoCliente() {
   const url = new URL(window.location.href);
-
+  const fecha= new Date()
   let cliente = url.searchParams.get("cliente");
   let telefono = url.searchParams.get("telefono");
 
-  document.getElementById(
-    "hCliente"
-  ).textContent = `Presupuesto dirigido a ${cliente}, teléfono ${telefono}`;
+  document.getElementById("hCliente").textContent = `Presupuesto dirigido a ${cliente}`;
+  document.getElementById("hTelefono").textContent = `Teléfono ${telefono}`;
+  document.getElementById("pFecha").textContent = `Fecha: ${fecha.getDate()}/${
+    fecha.getMonth() + 1}/${fecha.getFullYear()}`;
 }
 
 //Se realizo la modificación de la función cargar cliente, utilizando funcion flecha y operador ternario AND
@@ -97,13 +98,17 @@ const cargarCliente = () => {
   let modal = document.getElementById("modalForm");
   let nombre = document.getElementById("nombreInput").value;
   let telefono = document.getElementById("telefonoInput").value;
+  console.log(nombre+","+telefono)
   nombre !== "" && telefono !== ""
     ? ((clientePresupuesto = new Cliente(nombre, telefono)),
       clientePresupuesto.crearMensaje(),
       console.log(clientePresupuesto),
       enviarDatosCliente(nombre, telefono),
       cargarClienteEnLocalStorage(nombre, telefono),
-       modal.close()
+      alert("modal apagado"),
+      nombre.value="",
+      telefono.value="",
+       modal.style.display="none"
       )
       
     : alert(`No se cargaron los datos correctamente, reintente`);
@@ -212,6 +217,7 @@ function generarPDF() {
   document.getElementById("tareas").style.display = "none";
   document.getElementById("hTotalPresupuesto").textContent =
     document.getElementById("total").textContent;
+    document.getElementById("pLeyendaPresupuesto").innerHTML="El siguiente prespuesto es a modo informativo, el mismo puede variar.<br>Válido por el termino de 48 hs.<br>El mismo no incluye costo de materiales, fletes, o gastos indirectos "
   eliminarColumna();
   const element = document.getElementById("main-print");
 
@@ -292,3 +298,6 @@ function cargarOtraTarea() {
     ${tarea}
   </option>`;
 }
+
+
+

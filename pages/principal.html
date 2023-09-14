@@ -40,17 +40,24 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
   </head>
   <body onload="obtenerInfoCliente()">
     <main id="main-print">
+      <p class="mx-5 " id="pFecha"></p>
       <section class="container-fluid">
-        <div class="row col-12 mb-3 justify-content-center align-items-center">
+        <div class="row col-12 mb-3  justify-content-center align-items-center">
           <img
             src="../img/imagen.jpeg"
             alt="Imagen Reparacioens Manteco"
             class="col-4 imgLogo"
           />
           <h1 class="h1 col-6">REPARACIONES MANTECO</h1>
+          
+        </div>
+        <div class="row col-12 mb-3  justify-content-center align-items-center">
+          <p class=" col-8 mb-0">Dirección: Av colón 9875 B° Colinas del Cerro Córdoba Capital</p>
+          <p class=" col-8 mb-0">Teléfono: (+54) 351-5196190</p>
+          <p class=" col-8" >Web: reparacionesmanteco.netlify.app</p>
         </div>
       </section>
-      <section class="container bg-info py-2" id="botones">
+      <section class="container bgBotones py-2" id="botones">
         <div class="row">
           <div class="row col-12 justify-content-center align-items-center">
             <button
@@ -140,8 +147,9 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
         </div>
       </section>
       <section class="mt-2 px-0">
-        <div class="row col-12 justify-content-center align-items-center">
-          <h4 class="text-center" id="hCliente"></h4>
+        <div class="row col-12">
+          <h5 class="mx-5 px-3"  id="hCliente"></h5>
+          <h5 class="mx-5 px-3"  id="hTelefono"></h5>
         </div>
       </section>
 
@@ -164,14 +172,15 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
       <section class="container-fluid mb-5">
         <div class="row col-12 justify-content-center align-items-center">
           <h5 id="hTotalPresupuesto"></h5>
+          <i><p class="text-center mt-5" id="pLeyendaPresupuesto"></p></i>
         </div>
       </section>
     </main>
     <footer class="footer z-1">
       <div class="row mt-1 justify-content-center align-items-center">
         <b
-          ><p class="col-12 text-center" id="total">Total Presupuesto: $0</p></b
-        >
+          ><p class="col-12 text-center" id="total">Total Presupuesto: $0</p></b>
+         
       </div>
       <div class="row mb-1 justify-content-center align-items-center">
         <button
@@ -179,7 +188,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
           class="btn btn-success col-6 btnPresupuesto"
           onclick="generarPDF()"
         >
-          Enviar presupuesto <i class="fa fa-send-o"></i>
+          Generar presupuesto <i class="fa fa-send-o"></i>
         </button>
       </div>
     </footer>
