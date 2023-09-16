@@ -30,6 +30,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/x-icon" href="../img/favicon/favicon.ico" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
@@ -41,24 +42,22 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
   <body onload="obtenerInfoCliente()">
     <main id="main-print">
       
-      <section class="container-fluid">
-        <div class="row col-12 mb-3  justify-content-center align-items-center">
+      <section>
+        <div class="row col-12 mt-1  justify-content-center align-items-center">
           <p class="text-end" id="pFecha"></p>
           <img
             src="../img/imagen.jpeg"
-            alt="Imagen Reparacioens Manteco"
+            alt="Imagen Reparaciones Manteco"
             class="col-4 imgLogo"
           />
           <h1 class="h1 col-6">REPARACIONES MANTECO</h1>
-          
+          <p class=" col-12 mb-0 text-center encabezado" id="pDireccion"></p>
+          <p class=" col-12 mb-0 text-center encabezado" id="pTelefono"></p>
+          <p class=" col-12 mb-0 text-center encabezado" id="pWeb" ></p>          
         </div>
-        <div class="row col-12 mb-3  justify-content-center align-items-center">
-          <p class=" col-12 mb-0" id="pDireccion"></p>
-          <p class=" col-12 mb-0" id="pTelefono"></p>
-          <p class=" col-12" id="pWeb" ></p>
-        </div>
+        
       </section>
-      <section class="bgBotones py-2" id="botones">
+      <section class="container bgBotones py-2" id="botones">
         <div class="row">
           <div class="row col-12 justify-content-center align-items-center">
             <button
@@ -68,7 +67,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
               onclick="cargarTareas('Pintura')"
             >
               Pintura
-            </button>
+            </button> 
             <button
               type="button"
               id="btnAlbañil"
@@ -113,7 +112,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
         </div>
       </section>
 
-      <section class="bg-secondary py-1" id="tareas">
+      <section class="container bg-secondary py-1" id="tareas">
         <div class="row">
           <div class="col-5 px-1 text-white">
             <div class="form-group">
@@ -149,9 +148,10 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
       </section>
       <section class="mt-2 px-0">
         <div class="row col-12">
-          <h5 class="mx-5 px-3"  id="hCliente"></h5>
-          <h5 class="mx-5 px-3"  id="hTelefono"></h5>
+          <h6 class="text-center"  id="hCliente"></h6>
+          
         </div>
+        <br><br>
       </section>
 
       <section class="my-1 px-0" id="aImprimir2">
@@ -174,6 +174,7 @@ hincapié solamente en la funcionalidad que de manera eficaz por medio de estos 
       <section class="container-fluid mb-5">
         <div class="row col-12 justify-content-center align-items-center">
           <h5 id="hTotalPresupuesto"></h5>
+          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
           <i><p class="text-center mt-5" id="pLeyendaPresupuesto"></p></i>
         </div>
       </section>

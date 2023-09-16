@@ -86,8 +86,8 @@ function obtenerInfoCliente() {
   let cliente = url.searchParams.get("cliente");
   let telefono = url.searchParams.get("telefono");
 
-  document.getElementById("hCliente").textContent = `Presupuesto dirigido a ${cliente}`;
-  document.getElementById("hTelefono").textContent = `Teléfono ${telefono}`;
+  document.getElementById("hCliente").textContent = `Presupuesto dirigido a ${cliente} - Teléfono ${telefono}`;
+  
   document.getElementById("pFecha").textContent = `Fecha: ${fecha.getDate()}/${
     fecha.getMonth() + 1}/${fecha.getFullYear()}`;
 }
@@ -105,10 +105,8 @@ const cargarCliente = () => {
       console.log(clientePresupuesto),
       enviarDatosCliente(nombre, telefono),
       cargarClienteEnLocalStorage(nombre, telefono),
-      alert("modal apagado"),
       nombre.value="",
-      telefono.value="",
-       modal.style.display="none"
+      telefono.value=""
       )
       
     : alert(`No se cargaron los datos correctamente, reintente`);

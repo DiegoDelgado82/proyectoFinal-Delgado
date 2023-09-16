@@ -22,11 +22,14 @@ body {
  
  
   width: 100%;
-  padding-top: 70px; 
+  
       padding-bottom: 70px;
 }
 
-
+.encabezado
+{
+font-size: 10px;
+}
 
 
 
@@ -39,6 +42,13 @@ body {
   padding: 0px 0; /* Espacio de relleno superior e inferior del footer */
   text-align: center;
 }
+
+.colorBtn {
+  background-color: orangered;
+  border-color:orangered;
+  
+}
+
 
 .colorBtn:hover {
   background-color: #198754;
@@ -74,3 +84,4 @@ body {
 {
   font-size: 1.0rem !important;
 }
+
