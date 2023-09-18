@@ -1,4 +1,26 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*BIENVENIDO A LA APLICACIÓN BETA DE REPARACIONES MANTECO.
+En el siguiente apartado, voy a contar de qué se trata esta mini app. La misma viene a dar solución en cuanto a la ineficiencia y tiempo de demora cuando se realiza un presupuesto para algún
+tipo de reparación en el hogar. Permite al contratista hacer de manera rápida, dinámica y eficiente un presupuesto de las tareas a realizar, generando el mismo en formato PDF y con la opción
+de enviarlo a través de WhatsApp.
+
+Es por ello que la aplicación cuenta con dos secciones principales:
+
+1- Es la página de inicio (index), en la cual se verifica si hay elementos guardados en el local storage (cliente) para realizar un presupuesto a la misma persona o bien generar un
+presupuesto para un nuevo cliente. A su vez, en esta misma página se puede enviar un mensaje de WhatsApp al último cliente ingresado. En caso de ser la primera vez que se ingresa a la página,
+se le indica al usuario que no hay clientes registrados.
+2-El segundo apartado permite cargar las distintas tareas, las cuales las puede seleccionar por categorías. En el caso en que la tarea a realizar no se encuentre entre las tareas predefinidas,
+va a permitir al usuario ingresar una nueva tarea. En base a las tareas ingresadas, las funciones van a permitir ir calculando los costos de las mismas en función de la cantidad y precio unitario,
+a la vez que se muestra el total del presupuesto. Cuando se realiza la carga de una tarea, la misma se guarda en un array de tareas en formato JSON. Las tareas predefinidas en base a las categorías
+se encuentran en un archivo JSON, al cual se accede a través de una promesa para poder cargar los elementos en el select de tareas. Una vez realizado el presupuesto, se puede generar el archivo PDF,
+el cual tendrá el formato 'Nombre de cliente + fecha actual'.
+Espero haber sido lo más específico posible. Estaré pendiente por si se necesita algún otro tipo de información adicional.
+
+Saludos!!!!
+
+Diego Delgado
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*FUNCIONES DE PAGINA INDEX. SOBRE LA CARGA DEL CLIENTE Y VERIFICACIÓN DE LOS DATOS CARGADOS EN EL LOCAL STORAGE */
 
@@ -47,7 +69,7 @@ function revisarLocalStorage() {
   if (localStorage.key(0)) {
     const cliente = localStorage.key(0);
     const telefono = localStorage.key(1);
-
+    
     let confirmar = confirm(
       `El último cliente ingresado es ${localStorage.getItem(
         cliente
@@ -65,12 +87,8 @@ function revisarLocalStorage() {
       );
       clientePresupuestoViejo.crearMensaje();
       clientePresupuesto = clientePresupuestoViejo;
-    } else {
-      //modal.show();
-    }
-  } else {
-   // modal.show();
-  }
+    } 
+  } 
 }
 
 //Paso por parámetro el nombre y teléfono del cliente para que lo muestre en la página principal
@@ -120,7 +138,7 @@ function crearCliente() {
 
 /*FUNCIONES DE PAGINA PRINCIPAL. SOBRE EL ARMADO DEL PRESUPUESTO */
 
-/*Calculo el precio total de la tarea multiplicando el precio por la acantidad */
+/*Calculo el precio total de la tarea multiplicando el precio por la cantidad */
 function calcularPrecioTotal() {
   let precio = document.getElementById("precio").value;
 
@@ -164,6 +182,9 @@ function cargarFila() {
     document.getElementById("tarea").value = "";
     document.getElementById("precio").value = "";
     document.getElementById("cantidad").value = "";
+    mostrarExitoTarea();
+    
+
   } else if (isNaN(price) || price < 0)
   /*Informamos al usuario el dato faltante */
     alert("Debe cargar un precio válido, ingrese nuevamente");
@@ -172,14 +193,13 @@ function cargarFila() {
   else alert("Debe cargar un servicio, ingrese nuevamente");
 }
 
-/*Permite borrar una fila de la tabla de tareas cargada */
+//Permite borrar una fila de la tabla de tareas cargada 
 function borrarFila(boton, idx) {
   let fila = boton.parentNode.parentNode;
 
   let tabla = fila.parentNode;
   tabla.removeChild(fila);
   //llamo a la función para que re-calcule nuevamente el total del presupuesto
-  //calcularMontoTotal();
   listaServicios[idx - 1].precioTotal = 0;
   calcularMontoTotalPresupuesto();
 }
@@ -208,7 +228,7 @@ function calcularMontoTotalPresupuesto() {
   console.log(listaServicios);
 }
 
-// funcion que me permite pasar lo que hay en pantalla a PDF
+// funcion que me permite pasar lo que hay en el contenedor "main-print" a PDF
 function generarPDF() {
   console.log("Se activa la funcion para descargar el pdf");
   document.getElementById("botones").style.display = "none";
@@ -238,7 +258,7 @@ function generarPDF() {
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
   };
-
+  
   html2pdf().from(element).set(options).save();
 
   setTimeout(function () {
@@ -253,19 +273,28 @@ function crearServicio(servicio, precio, cantidad) {
   calcularMontoTotalPresupuesto();
 }
 
-/*En esta funcion se debe utilizar el mensaje del objeto cliente*/
+//Esta función busca el mensaje generado cuando se creó el cliente, busca el mismo en el locla storage y abre una ventana de whatsapp web o la aplicación si se utiliza desde un dispositivo mobile 
 
 function enviarPresupuesto() {
   if (localStorage.key(0)) {
     const cliente = localStorage.key(0);
     const telefono = localStorage.key(1);
-
     let confirmar = confirm(
       `El último cliente ingresado es ${localStorage.getItem(
         cliente
       )}, ¿desea enviar mensaje a este cliente?`
     );
     if (confirmar) {
+      
+      let clientePresupuestoViejo = new Cliente(
+        localStorage.getItem(cliente),
+        localStorage.getItem(telefono)
+      );
+      clientePresupuestoViejo.crearMensaje();
+      window.open(clientePresupuestoViejo.mensaje);
+    }
+
+    {
       let clientePresupuestoViejo = new Cliente(
         localStorage.getItem(cliente),
         localStorage.getItem(telefono)
@@ -278,6 +307,8 @@ function enviarPresupuesto() {
   }
 }
 
+
+// Esta función genera una promesa para poder leer el archivo json con las tareas que corresponde a cada categoría, en base a la categoría que seleccionó carga las opciones del select
 const cargarTareas = async (categoria) => {
   document.getElementById("tarea").innerHTML = "";
   const rep = await fetch("../json/tareas.json");
@@ -294,15 +325,48 @@ const cargarTareas = async (categoria) => {
   });
 };
 
-function cargarOtraTarea() {
-  const fecha = new Date();
 
+
+//Si no se selecciona la tarea definida en alguna de las categorías, se le solicita que ingrese una nueva para presupuestarla
+const cargarOtraTarea = () => {
   const tarea = prompt("Cargar la tarea a realizar");
-
   document.getElementById("tarea").innerHTML = `<option value="${tarea}">
     ${tarea}
   </option>`;
+};
+
+//Se utiliza la librería sweetalert2 para mostrar el mensaje de carga exitosa
+const mostrarExitoTarea= ()=>
+{
+  Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    title: 'La tarea se cargó en el presupuesto correctamente',
+    showConfirmButton: false,
+    timer: 1000
+  })
 }
 
-
-
+const validarCargaCliente=()=>
+{
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Deleted!',
+        'Your file has been deleted.',
+        'success',
+      )
+      return true;
+    }
+    else
+      return false;
+  })
+}
